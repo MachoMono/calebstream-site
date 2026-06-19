@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CalebStillStreams Pipeline — personal automation tool that updates YouTube video thumbnails, titles, descriptions, and tags after each Twitch stream ends." />
   <title>CalebStillStreams Pipeline</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,106 +21,89 @@
     .card {
       max-width: 640px;
       width: 100%;
-      text-align: center;
     }
-    .logo {
-      font-size: 2.4rem;
+    h1 {
+      font-size: 2.2rem;
       font-weight: 800;
       color: #F9C424;
       letter-spacing: -1px;
-      margin-bottom: 0.25rem;
+      margin-bottom: 1rem;
     }
-    .tagline {
-      font-size: 1rem;
-      color: #888;
-      margin-bottom: 2.5rem;
+    .purpose {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #ddd;
+      margin-bottom: 2rem;
+      padding: 1.25rem 1.5rem;
+      background: #1a1a1a;
+      border-left: 4px solid #F9C424;
+      border-radius: 4px;
     }
     h2 {
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: #F9C424;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 0.75rem;
+      margin: 1.75rem 0 0.75rem;
     }
     p {
-      font-size: 0.95rem;
-      line-height: 1.7;
+      font-size: 0.92rem;
+      line-height: 1.75;
       color: #bbb;
-      margin-bottom: 1.75rem;
+      margin-bottom: 1rem;
     }
-    .app-name {
-      display: inline-block;
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 6px;
-      padding: 0.2rem 0.65rem;
-      font-family: monospace;
-      font-size: 0.9rem;
-      color: #F9C424;
-      margin-bottom: 1.75rem;
+    ol {
+      padding-left: 1.25rem;
+      margin-bottom: 1rem;
     }
-    .steps {
-      list-style: none;
-      text-align: left;
-      background: #1a1a1a;
-      border-radius: 10px;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.75rem;
-    }
-    .steps li {
-      font-size: 0.9rem;
+    li {
+      font-size: 0.92rem;
+      line-height: 1.75;
       color: #bbb;
-      padding: 0.4rem 0;
-      border-bottom: 1px solid #2a2a2a;
-      display: flex;
-      gap: 0.75rem;
-    }
-    .steps li:last-child { border-bottom: none; }
-    .step-num {
-      color: #F9C424;
-      font-weight: 700;
-      min-width: 1.2rem;
+      margin-bottom: 0.3rem;
     }
     footer {
       margin-top: 3rem;
       font-size: 0.8rem;
       color: #555;
     }
-    footer a {
-      color: #888;
-      text-decoration: none;
-    }
+    footer a { color: #888; text-decoration: none; }
     footer a:hover { color: #F9C424; }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="logo">CalebStillStreams Pipeline</div>
-    <div class="tagline">calebstream.fyi</div>
+    <h1>CalebStillStreams Pipeline</h1>
 
+    <div class="purpose">
+      <strong>CalebStillStreams Pipeline</strong> is a personal automation application
+      that uses the YouTube Data API to automatically update video thumbnails, titles,
+      descriptions, and tags on the CalebStillStreams YouTube channel after each Twitch
+      live stream ends.
+    </div>
+
+    <h2>Purpose</h2>
     <p>
-      <strong>CalebStillStreams Pipeline</strong> is a personal automation tool that
-      connects Caleb's Twitch channel to his YouTube channel. When a live stream ends
-      on Twitch, the pipeline automatically updates the corresponding YouTube VOD with
-      a custom thumbnail, SEO-optimized description, tags, and chapter markers.
+      This application automates post-stream YouTube video management for the
+      CalebStillStreams channel. It is operated solely by the channel owner and
+      accesses only his own YouTube account.
     </p>
 
-    <div class="app-name">CalebStillStreams Pipeline</div>
-
     <h2>How It Works</h2>
-    <ol class="steps">
-      <li><span class="step-num">1</span>Twitch sends a stream-offline webhook when the broadcast ends.</li>
-      <li><span class="step-num">2</span>The pipeline polls YouTube until the VOD is fully processed.</li>
-      <li><span class="step-num">3</span>It extracts the best frame from the VOD for use as a thumbnail.</li>
-      <li><span class="step-num">4</span>A custom thumbnail is generated and uploaded to YouTube.</li>
-      <li><span class="step-num">5</span>Title, description, tags, and chapters are applied automatically.</li>
+    <ol>
+      <li>Twitch sends a webhook notification when the stream ends.</li>
+      <li>The pipeline waits for YouTube to finish processing the VOD.</li>
+      <li>It extracts the best frame from the video to use as a thumbnail.</li>
+      <li>A custom thumbnail is generated and uploaded via the YouTube Data API.</li>
+      <li>The video title, description, tags, and chapters are updated automatically.</li>
     </ol>
 
+    <h2>YouTube API Access</h2>
     <p>
-      This tool accesses only the YouTube account belonging to CalebStillStreams and
-      is operated solely by Caleb for his own content. No user data is collected or
-      shared with third parties.
+      CalebStillStreams Pipeline uses the YouTube Data API v3 to read and update
+      videos on the owner's channel. It does not access any other users' data and
+      does not share any data with third parties.
     </p>
 
     <footer>
