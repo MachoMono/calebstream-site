@@ -18,12 +18,13 @@
       --text:     #e8e8e8;
       --muted:    #888;
 
-      /* LCD palette */
-      --lcd-bg:     #030b03;
-      --lcd-green:  #a8ffa8;
-      --lcd-bright: #dfffdf;
-      --lcd-dim:    #4a7a4a;
-      --lcd-border: #163016;
+      --lcd-bg:       #030b03;
+      --lcd-card-bg:  #050f05;
+      --lcd-green:    #a8ffa8;
+      --lcd-bright:   #dfffdf;
+      --lcd-dim:      #4a7a4a;
+      --lcd-border:   #163016;
+      --lcd-card-bdr: #1e421e;
     }
 
     html, body { height: 100%; }
@@ -34,7 +35,7 @@
       font-family: 'Barlow', sans-serif;
       font-size: 1rem;
       line-height: 1.6;
-      overflow: hidden;     /* page-level scroll disabled; panes scroll */
+      overflow: hidden;
       display: flex;
       flex-direction: column;
     }
@@ -42,7 +43,7 @@
     /* ── BANNER ── */
     .banner {
       width: 100%;
-      height: 160px;
+      height: 150px;
       flex-shrink: 0;
       overflow: hidden;
       position: relative;
@@ -71,15 +72,15 @@
       display: flex;
       align-items: center;
       gap: 1.25rem;
-      padding: 0.75rem 1.5rem;
+      padding: 0.65rem 1.5rem;
       border-bottom: 2px solid #1c1c1c;
       background: var(--dark);
       z-index: 10;
     }
 
     .site-header .logo {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       border: 2px solid var(--yellow);
       object-fit: cover;
@@ -91,15 +92,14 @@
     .site-header h1 {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900;
-      font-size: 1.6rem;
+      font-size: 1.55rem;
       color: var(--yellow);
       text-transform: uppercase;
       line-height: 1;
-      white-space: nowrap;
     }
 
     .site-header .tagline {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.12em;
@@ -119,10 +119,9 @@
       letter-spacing: 0.08em;
       color: var(--muted);
       text-decoration: none;
-      padding: 0.25rem 0.6rem;
+      padding: 0.2rem 0.55rem;
       border: 1px solid #2a2a2a;
       transition: border-color 0.15s, color 0.15s;
-      white-space: nowrap;
     }
 
     .site-header nav a:hover { border-color: var(--yellow); color: var(--yellow); }
@@ -136,9 +135,9 @@
       min-height: 0;
     }
 
-    /* ────────────────────────────────────────
+    /* ════════════════════════════════════════
        LEFT — LCD GUESTBOOK
-    ──────────────────────────────────────── */
+    ════════════════════════════════════════ */
     .lcd-pane {
       background: var(--lcd-bg);
       border-right: 2px solid var(--lcd-border);
@@ -155,10 +154,8 @@
       inset: 0;
       background: repeating-linear-gradient(
         0deg,
-        transparent,
-        transparent 3px,
-        rgba(0, 0, 0, 0.12) 3px,
-        rgba(0, 0, 0, 0.12) 4px
+        transparent, transparent 3px,
+        rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px
       );
       pointer-events: none;
       z-index: 5;
@@ -166,10 +163,10 @@
 
     .lcd-col-header {
       flex-shrink: 0;
-      padding: 0.6rem 1rem;
+      padding: 0.5rem 0.9rem;
       border-bottom: 1px solid var(--lcd-border);
       font-family: 'VT323', monospace;
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--lcd-dim);
       letter-spacing: 0.1em;
       display: flex;
@@ -182,54 +179,49 @@
       color: var(--lcd-green);
     }
 
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-    /* ── LCD FORM ── */
+    /* ── FORM ── */
     .lcd-form {
       flex-shrink: 0;
-      padding: 0.75rem 1rem;
+      padding: 0.65rem 0.9rem;
       border-bottom: 1px solid var(--lcd-border);
+      background: #020902;
     }
 
     .lcd-form-row {
       display: grid;
       grid-template-columns: 1fr auto;
-      gap: 0.4rem;
-      margin-bottom: 0.4rem;
+      gap: 0.35rem;
+      margin-bottom: 0.35rem;
     }
 
     .lcd-input, .lcd-select, .lcd-textarea {
-      background: #020702;
+      background: #010601;
       border: 1px solid var(--lcd-dim);
       color: var(--lcd-green);
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.85rem;
-      padding: 0.3rem 0.5rem;
+      font-size: 0.82rem;
+      padding: 0.28rem 0.5rem;
       outline: none;
       transition: border-color 0.1s, box-shadow 0.1s;
       width: 100%;
     }
 
-    .lcd-input::placeholder, .lcd-textarea::placeholder {
-      color: var(--lcd-dim);
-    }
+    .lcd-input::placeholder, .lcd-textarea::placeholder { color: var(--lcd-dim); }
 
     .lcd-input:focus, .lcd-select:focus, .lcd-textarea:focus {
       border-color: var(--lcd-green);
-      box-shadow: 0 0 6px rgba(168, 255, 168, 0.15);
+      box-shadow: 0 0 5px rgba(168,255,168,0.12);
     }
 
-    .lcd-select {
-      width: auto;
-      cursor: pointer;
-    }
-
+    .lcd-select { width: auto; cursor: pointer; }
     .lcd-select option { background: #030b03; color: var(--lcd-green); }
 
     .lcd-textarea {
       resize: none;
-      height: 56px;
-      margin-bottom: 0.4rem;
+      height: 52px;
+      margin-bottom: 0.35rem;
       display: block;
     }
 
@@ -242,100 +234,122 @@
 
     .lcd-btn {
       font-family: 'VT323', monospace;
-      font-size: 1.1rem;
-      letter-spacing: 0.08em;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
       background: transparent;
       color: var(--lcd-bright);
       border: 1px solid var(--lcd-green);
-      padding: 0.15rem 0.8rem;
+      padding: 0.1rem 0.75rem;
       cursor: pointer;
       transition: background 0.1s, box-shadow 0.1s;
       white-space: nowrap;
     }
 
-    .lcd-btn:hover {
-      background: rgba(168,255,168,0.1);
-      box-shadow: 0 0 8px rgba(168,255,168,0.2);
-    }
-
+    .lcd-btn:hover { background: rgba(168,255,168,0.08); box-shadow: 0 0 6px rgba(168,255,168,0.15); }
     .lcd-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 
     .lcd-status {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       color: var(--lcd-dim);
       min-height: 1em;
     }
 
-    .lcd-status.ok { color: var(--lcd-green); }
+    .lcd-status.ok  { color: var(--lcd-green); }
     .lcd-status.err { color: #ff6b6b; }
 
-    /* ── LCD FEED ── */
+    /* ── FEED ── */
     .lcd-feed {
       flex: 1;
       overflow-y: auto;
-      padding: 0.5rem 0;
+      padding: 0.5rem 0.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
       scrollbar-width: thin;
       scrollbar-color: var(--lcd-border) transparent;
     }
 
-    .lcd-feed::-webkit-scrollbar { width: 4px; }
-    .lcd-feed::-webkit-scrollbar-track { background: transparent; }
+    .lcd-feed::-webkit-scrollbar { width: 3px; }
     .lcd-feed::-webkit-scrollbar-thumb { background: var(--lcd-border); }
 
-    .lcd-msg {
-      padding: 0.55rem 1rem;
-      border-bottom: 1px solid var(--lcd-border);
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.8rem;
-      line-height: 1.5;
+    /* ── MESSAGE CARD ── */
+    .msg-card {
+      background: var(--lcd-card-bg);
+      border: 1px solid var(--lcd-card-bdr);
+      padding: 0.55rem 0.65rem;
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 0.55rem;
+      align-items: start;
     }
 
-    .lcd-msg-head {
+    .msg-card:hover { border-color: var(--lcd-dim); }
+
+    .msg-avatar {
+      width: 38px;
+      height: 38px;
+      object-fit: cover;
+      border: 1px solid var(--lcd-card-bdr);
+      display: block;
+      flex-shrink: 0;
+      image-rendering: auto;
+      filter: sepia(0.3) hue-rotate(80deg) saturate(0.7) brightness(0.85);
+    }
+
+    .msg-right { min-width: 0; }
+
+    .msg-head {
       display: flex;
       align-items: baseline;
-      gap: 0.5rem;
-      margin-bottom: 0.2rem;
+      gap: 0.4rem;
+      margin-bottom: 0.25rem;
       flex-wrap: wrap;
     }
 
-    .lcd-handle {
+    .msg-handle {
       font-family: 'VT323', monospace;
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--lcd-bright);
-      text-shadow: 0 0 6px rgba(168,255,168,0.4);
+      text-shadow: 0 0 5px rgba(168,255,168,0.35);
+      line-height: 1;
     }
 
-    .lcd-platform {
-      font-size: 0.65rem;
+    .msg-platform {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
       color: var(--lcd-dim);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
     }
 
-    .lcd-ts {
+    .msg-ts {
       margin-left: auto;
-      font-size: 0.65rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
       color: var(--lcd-dim);
       white-space: nowrap;
     }
 
-    .lcd-msg-body {
+    .msg-body {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
       color: var(--lcd-green);
+      line-height: 1.5;
       word-break: break-word;
     }
 
     .lcd-empty {
       padding: 2rem 1rem;
       font-family: 'VT323', monospace;
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: var(--lcd-dim);
       text-align: center;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
     }
 
-    /* ────────────────────────────────────────
+    /* ════════════════════════════════════════
        RIGHT — MANGA POSTS
-    ──────────────────────────────────────── */
+    ════════════════════════════════════════ */
     .manga-pane {
       background: var(--dark);
       display: flex;
@@ -345,18 +359,17 @@
 
     .manga-col-header {
       flex-shrink: 0;
-      padding: 0.6rem 1.25rem;
+      padding: 0.5rem 1.15rem;
       border-bottom: 1px solid #1c1c1c;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
     }
 
     .col-label {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       text-transform: uppercase;
       letter-spacing: 0.2em;
       color: var(--yellow);
@@ -364,19 +377,18 @@
       padding-left: 0.5rem;
     }
 
-    /* compact stream row */
     .stream-row {
       flex-shrink: 0;
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.6rem 1.25rem;
+      gap: 0.7rem;
+      padding: 0.5rem 1.15rem;
       border-bottom: 1px solid #1c1c1c;
       background: #0a0a0a;
     }
 
     .stream-row img.mini-gif {
-      width: 40px;
+      width: 36px;
       height: auto;
       image-rendering: pixelated;
       flex-shrink: 0;
@@ -385,76 +397,64 @@
     .stream-row .stream-name {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: var(--yellow);
       text-transform: uppercase;
       flex: 1;
     }
 
-    .stream-row .stream-links {
-      display: flex;
-      gap: 0.4rem;
-    }
+    .stream-row .stream-links { display: flex; gap: 0.35rem; }
 
     .stream-row .stream-links a {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.07em;
       text-decoration: none;
-      padding: 0.2rem 0.6rem;
+      padding: 0.18rem 0.55rem;
       border: 1px solid;
-      transition: background 0.15s, color 0.15s;
+      transition: background 0.12s, color 0.12s;
       white-space: nowrap;
     }
 
-    .stream-row .stream-links .lnk-twitch {
-      background: var(--yellow);
-      color: #000;
-      border-color: var(--yellow);
-    }
+    .lnk-twitch { background: var(--yellow); color: #000; border-color: var(--yellow); }
+    .lnk-twitch:hover { background: #e0ad1a; }
+    .lnk-yt { background: transparent; color: var(--muted); border-color: #333; }
+    .lnk-yt:hover { color: var(--yellow); border-color: var(--yellow); }
 
-    .stream-row .stream-links .lnk-twitch:hover { background: #e0ad1a; }
-
-    .stream-row .stream-links .lnk-yt {
-      background: transparent;
-      color: var(--muted);
-      border-color: #333;
-    }
-
-    .stream-row .stream-links .lnk-yt:hover { color: var(--yellow); border-color: var(--yellow); }
-
-    /* posts */
+    /* ── BLOG POSTS ── */
     .manga-feed {
       flex: 1;
       overflow-y: auto;
+      padding: 0.5rem 0.7rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
       scrollbar-width: thin;
       scrollbar-color: #222 transparent;
     }
 
-    .manga-feed::-webkit-scrollbar { width: 4px; }
-    .manga-feed::-webkit-scrollbar-track { background: transparent; }
+    .manga-feed::-webkit-scrollbar { width: 3px; }
     .manga-feed::-webkit-scrollbar-thumb { background: #222; }
 
-    .blog-post {
-      border-bottom: 1px solid #1c1c1c;
-      padding: 1.1rem 1.25rem;
-      background: var(--dark);
+    .blog-card {
+      background: var(--panel-bg);
+      border: 1px solid #222;
+      border-left: 3px solid var(--yellow);
+      padding: 0.85rem 1rem;
     }
-
-    .blog-post:first-child { border-top: 2px solid var(--yellow); }
 
     .post-meta {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.35rem;
+      gap: 0.45rem;
+      margin-bottom: 0.3rem;
     }
 
     .post-date {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -463,27 +463,27 @@
 
     .post-tag {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: #444;
       border: 1px solid #2a2a2a;
-      padding: 0.05rem 0.35rem;
+      padding: 0.04rem 0.3rem;
     }
 
-    .blog-post h3 {
+    .blog-card h3 {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: var(--text);
       text-transform: uppercase;
       line-height: 1.2;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.3rem;
     }
 
-    .blog-post p {
-      font-size: 0.88rem;
+    .blog-card p {
+      font-size: 0.86rem;
       color: #888;
       line-height: 1.65;
     }
@@ -491,8 +491,8 @@
     /* ── FOOTER ── */
     footer {
       flex-shrink: 0;
-      border-top: 1px solid #1a1a1a;
-      padding: 0.6rem 1.5rem;
+      border-top: 1px solid #181818;
+      padding: 0.5rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -501,8 +501,8 @@
     }
 
     footer .footer-left {
-      font-size: 0.72rem;
-      color: #444;
+      font-size: 0.68rem;
+      color: #3a3a3a;
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
       text-transform: uppercase;
@@ -512,8 +512,8 @@
     footer nav { display: flex; gap: 1rem; }
 
     footer nav a {
-      font-size: 0.72rem;
-      color: #444;
+      font-size: 0.68rem;
+      color: #3a3a3a;
       text-decoration: none;
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 700;
@@ -527,37 +527,19 @@
     /* ── MOBILE ── */
     @media (max-width: 700px) {
       body { overflow: auto; }
-
-      .split {
-        grid-template-columns: 1fr;
-        overflow: visible;
-        flex: none;
-      }
-
-      .lcd-pane, .manga-pane {
-        overflow: visible;
-        height: auto;
-      }
-
-      .lcd-feed, .manga-feed {
-        overflow: visible;
-        height: auto;
-        max-height: none;
-      }
-
+      .split { grid-template-columns: 1fr; overflow: visible; flex: none; }
+      .lcd-pane, .manga-pane { overflow: visible; height: auto; }
+      .lcd-feed, .manga-feed { overflow: visible; height: auto; max-height: none; }
       .site-header { flex-wrap: wrap; }
-      .site-header nav { gap: 0.4rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- BANNER -->
   <div class="banner">
     <img src="banner.png" alt="" />
   </div>
 
-  <!-- HEADER -->
   <header class="site-header">
     <img class="logo" src="logo.png" alt="calebstillstreams" />
     <div class="title-block">
@@ -570,10 +552,9 @@
     </nav>
   </header>
 
-  <!-- SPLIT -->
   <div class="split">
 
-    <!-- ── LEFT: LCD GUESTBOOK ── -->
+    <!-- ════ LEFT: LCD GUESTBOOK ════ -->
     <div class="lcd-pane">
       <div class="lcd-col-header">
         <span>TRANSMISSIONS_</span>
@@ -604,7 +585,7 @@
       </div>
     </div>
 
-    <!-- ── RIGHT: MANGA POSTS ── -->
+    <!-- ════ RIGHT: MANGA POSTS ════ -->
     <div class="manga-pane">
       <div class="manga-col-header">
         <span class="col-label">// Posts</span>
@@ -623,7 +604,7 @@
 
         <!-- ── ADD NEW POSTS AT THE TOP ── -->
 
-        <article class="blog-post">
+        <article class="blog-card">
           <div class="post-meta">
             <span class="post-date">June 19, 2026</span>
             <span class="post-tag">meta</span>
@@ -641,7 +622,6 @@
 
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-left">calebstillstreams &copy; 2026</div>
     <nav>
@@ -653,37 +633,51 @@
   <script>
     const API = "https://calebstillstreams-webhook-if2erxe6bq-uc.a.run.app";
 
-    const feed      = document.getElementById("lcd-feed");
-    const handleEl  = document.getElementById("gb-handle");
-    const platformEl= document.getElementById("gb-platform");
-    const msgEl     = document.getElementById("gb-message");
-    const submitBtn = document.getElementById("gb-submit");
-    const statusEl  = document.getElementById("gb-status");
+    // Deterministic avatar: hash handle → index into avatar list
+    const AVATARS = [
+      "av00.webp","av01.webp","av02.webp","av03.webp","av04.webp",
+      "av05.webp","av06.webp","av07.webp","av08.webp","av09.webp",
+      "av10.webp","av11.webp","av12.webp","av13.webp","av14.webp",
+      "av16.webp","av17.webp","av18.webp","av22.webp","av23.webp",
+      "av25.webp","av26.webp","av27.webp",
+    ];
+
+    function avatarFor(handle) {
+      let h = 0;
+      for (let i = 0; i < handle.length; i++) {
+        h = Math.imul(31, h) + handle.charCodeAt(i) | 0;
+      }
+      return "avatars/" + AVATARS[Math.abs(h) % AVATARS.length];
+    }
 
     function escHtml(s) {
       return String(s)
-        .replace(/&/g, "&amp;").replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
     }
 
     function fmtDate(iso) {
       const d = new Date(iso);
-      return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "2-digit" });
+      return d.toLocaleDateString("en-US", { month:"short", day:"numeric", year:"2-digit" });
     }
 
     function renderFeed(messages) {
+      const feed = document.getElementById("lcd-feed");
       if (!messages.length) {
         feed.innerHTML = '<div class="lcd-empty">NO_TRANSMISSIONS_YET</div>';
         return;
       }
       feed.innerHTML = messages.map(m => `
-        <div class="lcd-msg">
-          <div class="lcd-msg-head">
-            <span class="lcd-handle">${escHtml(m.handle)}</span>
-            <span class="lcd-platform">[${escHtml(m.platform)}]</span>
-            <span class="lcd-ts">${fmtDate(m.ts)}</span>
+        <div class="msg-card">
+          <img class="msg-avatar" src="${avatarFor(m.handle)}" alt="" loading="lazy" />
+          <div class="msg-right">
+            <div class="msg-head">
+              <span class="msg-handle">${escHtml(m.handle)}</span>
+              <span class="msg-platform">[${escHtml(m.platform)}]</span>
+              <span class="msg-ts">${fmtDate(m.ts)}</span>
+            </div>
+            <div class="msg-body">${escHtml(m.message)}</div>
           </div>
-          <div class="lcd-msg-body">${escHtml(m.message)}</div>
         </div>
       `).join("");
     }
@@ -692,44 +686,44 @@
       try {
         const r = await fetch(`${API}/guestbook`);
         if (!r.ok) throw new Error(r.status);
-        const data = await r.json();
-        renderFeed(data.messages);
+        renderFeed((await r.json()).messages);
       } catch {
-        feed.innerHTML = '<div class="lcd-empty">ERR: COULD_NOT_LOAD</div>';
+        document.getElementById("lcd-feed").innerHTML =
+          '<div class="lcd-empty">ERR: COULD_NOT_LOAD</div>';
       }
     }
+
+    const handleEl  = document.getElementById("gb-handle");
+    const platformEl= document.getElementById("gb-platform");
+    const msgEl     = document.getElementById("gb-message");
+    const submitBtn = document.getElementById("gb-submit");
+    const statusEl  = document.getElementById("gb-status");
 
     submitBtn.addEventListener("click", async () => {
       statusEl.textContent = "";
       statusEl.className = "lcd-status";
-
       const handle  = handleEl.value.trim();
       const platform= platformEl.value;
       const message = msgEl.value.trim();
-
       if (!handle || !message) {
         statusEl.textContent = "handle + message required";
         statusEl.className = "lcd-status err";
         return;
       }
-
       submitBtn.disabled = true;
       submitBtn.textContent = "[ SENDING_ ]";
-
       try {
         const r = await fetch(`${API}/guestbook`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ handle, platform, message }),
         });
-
         if (r.status === 429) {
           statusEl.textContent = "rate limit — try later";
           statusEl.className = "lcd-status err";
           return;
         }
         if (!r.ok) throw new Error(r.status);
-
         statusEl.textContent = "transmitted.";
         statusEl.className = "lcd-status ok";
         msgEl.value = "";
@@ -745,6 +739,5 @@
 
     loadMessages();
   </script>
-
 </body>
 </html>
