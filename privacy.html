@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — CalebStillStreams</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 3rem 1.5rem;
+    }
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #F9C424;
+      margin-bottom: 0.25rem;
+    }
+    .back {
+      font-size: 0.85rem;
+      color: #888;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 2.5rem;
+    }
+    .back:hover { color: #F9C424; }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    .updated {
+      font-size: 0.8rem;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #F9C424;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin: 1.75rem 0 0.5rem;
+    }
+    p, li {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: #bbb;
+    }
+    ul {
+      padding-left: 1.25rem;
+      margin-top: 0.4rem;
+    }
+    li { margin-bottom: 0.3rem; }
+    a { color: #F9C424; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer {
+      margin-top: 3rem;
+      font-size: 0.8rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">CalebStillStreams</div>
+    <a class="back" href="/">&larr; Home</a>
+
+    <h1>Privacy Policy</h1>
+    <div class="updated">Last updated: June 19, 2026</div>
+
+    <p>
+      This Privacy Policy describes how the <strong>CalebStillStreams Pipeline</strong>
+      application ("the App") handles data. The App is a personal automation tool
+      operated solely by Caleb (calebstillstreams) for managing his own YouTube content.
+    </p>
+
+    <h2>What the App Does</h2>
+    <p>
+      The App uses the YouTube Data API to automate post-stream updates to videos on
+      the CalebStillStreams YouTube channel. Specifically, it:
+    </p>
+    <ul>
+      <li>Reads recently published YouTube videos on the owner's channel</li>
+      <li>Uploads custom thumbnails to those videos</li>
+      <li>Updates video titles, descriptions, and tags</li>
+    </ul>
+
+    <h2>Data Accessed</h2>
+    <p>
+      The App accesses YouTube account data belonging only to the channel owner (Caleb).
+      No data is collected from viewers, subscribers, or any third parties.
+    </p>
+
+    <h2>Data Storage</h2>
+    <p>
+      OAuth credentials required for YouTube API access are stored securely in
+      Google Cloud Secret Manager within the owner's own Google Cloud project.
+      No personal data is stored in external databases or transmitted to third parties.
+    </p>
+
+    <h2>Data Sharing</h2>
+    <p>
+      No data is sold, rented, or shared with any third parties. The App is a
+      private tool used exclusively by its owner.
+    </p>
+
+    <h2>Third-Party Services</h2>
+    <p>
+      The App interacts with the following external APIs:
+    </p>
+    <ul>
+      <li><a href="https://developers.google.com/youtube/v3" target="_blank" rel="noopener">YouTube Data API v3</a> — to update video metadata and thumbnails</li>
+      <li><a href="https://dev.twitch.tv/docs/eventsub/" target="_blank" rel="noopener">Twitch EventSub</a> — to receive stream-end notifications</li>
+    </ul>
+    <p>
+      Use of these APIs is governed by their respective terms and privacy policies.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      For questions about this policy, contact:
+      <a href="mailto:larrycm@gmail.com">larrycm@gmail.com</a>
+    </p>
+
+    <footer>
+      &copy; 2026 CalebStillStreams &middot; <a href="/">Home</a>
+    </footer>
+  </div>
+</body>
+</html>
