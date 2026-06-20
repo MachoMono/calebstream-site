@@ -176,9 +176,12 @@ export default function Feed() {
 
       <style>{`
         .feed-root {
-          max-width: 680px;
+          max-width: 720px;
           margin: 0 auto;
           padding: 1.5rem 1.5rem 4rem;
+        }
+        @media (max-width: 600px) {
+          .feed-root { padding: 1rem 0.75rem 3rem; }
         }
         .feed-toolbar {
           display: flex;
