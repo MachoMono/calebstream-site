@@ -168,9 +168,9 @@ export default function Feed() {
 
       <style>{`
         .feed-root {
-          max-width: 700px;
+          max-width: 680px;
           margin: 0 auto;
-          padding: 1.25rem 1rem 4rem;
+          padding: 1.5rem 1.5rem 4rem;
         }
         .feed-toolbar {
           display: flex;
@@ -232,7 +232,7 @@ export default function Feed() {
         .feed-list {
           display: flex;
           flex-direction: column;
-          border: 1px solid var(--border);
+          gap: 0.6rem;
         }
 
         /* sign-in overlay */

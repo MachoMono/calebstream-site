@@ -33,7 +33,10 @@ const PLATFORM_LABEL: Record<string, string> = {
   other:     "other",
 };
 
+import { useState } from "react";
+
 export default function PostCard({ post }: { post: Post }) {
+  const [selected, setSelected] = useState(false);
   const avatar = post.avatar_url || avatarFor(post.handle);
   const platform = PLATFORM_LABEL[post.platform] ?? "other";
 
@@ -42,7 +45,10 @@ export default function PostCard({ post }: { post: Post }) {
     : <p className="card-body card-body--plain">{post.message}</p>;
 
   return (
-    <article className="post-card">
+    <article
+      className={`post-card${selected ? " post-card--selected" : ""}`}
+      onClick={() => setSelected((s) => !s)}
+    >
       <img className="post-avatar" src={avatar} alt="" loading="lazy" />
       <div className="post-main">
         <div className="post-head">
@@ -76,10 +82,15 @@ export default function PostCard({ post }: { post: Post }) {
           padding: 0.75rem 1rem;
           background: var(--bg);
           border: 1px solid var(--border);
-          margin-bottom: -1px;
-          transition: background 0.1s;
+          cursor: pointer;
+          transition: background 0.1s, border-color 0.1s, box-shadow 0.1s;
         }
         .post-card:hover { background: var(--bg-hover); }
+        .post-card--selected {
+          border-color: var(--fg);
+          border-width: 2px;
+          box-shadow: 3px 3px 0 var(--fg);
+        }
         .post-avatar {
           width: 40px;
           height: 40px;

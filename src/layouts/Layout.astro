@@ -1,4 +1,5 @@
 ---
+import ThemePicker from "../components/ThemePicker";
 interface Props {
   title?: string;
 }
@@ -18,19 +19,89 @@ const { title = "calebstillstreams" } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Barlow+Condensed:wght@700;900&display=swap"
       rel="stylesheet"
     />
+    <!-- Apply saved theme before paint to avoid flash -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem("calebstream-theme");
+          if (t) document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
     <!-- Google Identity Services -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style is:global>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-      :root {
-        --yellow:  #F9C424;
-        --fg:      #000000;
-        --bg:      #eaeae4;
-        --fg-dim:  #666666;
-        --border:  #b0b0aa;
-        --bg-dim:  #d8d8d2;
-        --bg-hover:#d0d0ca;
+      /* ── LCD (default) ── */
+      :root, [data-theme="lcd"] {
+        --yellow:    #F9C424;
+        --fg:        #000000;
+        --bg:        #eaeae4;
+        --fg-dim:    #666666;
+        --border:    #b0b0aa;
+        --bg-dim:    #d8d8d2;
+        --bg-hover:  #d0d0ca;
+        --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+      }
+
+      /* ── SNES ── */
+      [data-theme="snes"] {
+        --yellow:    #e8a000;
+        --fg:        #e8e8f0;
+        --bg:        #1e1e38;
+        --fg-dim:    #8888b8;
+        --border:    #44447a;
+        --bg-dim:    #14142a;
+        --bg-hover:  #2c2c50;
+        --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+      }
+
+      /* ── Sega Genesis ── */
+      [data-theme="genesis"] {
+        --yellow:    #FF4444;
+        --fg:        #DD1111;
+        --bg:        #0a0a0a;
+        --fg-dim:    #661111;
+        --border:    #220000;
+        --bg-dim:    #150000;
+        --bg-hover:  #1e0000;
+        --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+      }
+
+      /* ── PS2 ── */
+      [data-theme="ps2"] {
+        --yellow:    #8899FF;
+        --fg:        #aabbff;
+        --bg:        #04091e;
+        --fg-dim:    #334477;
+        --border:    #1a2a55;
+        --bg-dim:    #080f2a;
+        --bg-hover:  #101830;
+        --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+      }
+
+      /* ── GameCube ── */
+      [data-theme="gamecube"] {
+        --yellow:    #cc44ff;
+        --fg:        #ee99ff;
+        --bg:        #0e0018;
+        --fg-dim:    #663388;
+        --border:    #33005a;
+        --bg-dim:    #180028;
+        --bg-hover:  #200035;
+        --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+      }
+
+      /* ── Bombpop ── */
+      [data-theme="bombpop"] {
+        --yellow:    #0033cc;
+        --fg:        #cc0033;
+        --bg:        #f4f0ff;
+        --fg-dim:    #8844aa;
+        --border:    #ddbbee;
+        --bg-dim:    #e8e0f8;
+        --bg-hover:  #e0d4f4;
         --font-mono: 'Share Tech Mono', 'Courier New', monospace;
       }
 
@@ -82,7 +153,6 @@ const { title = "calebstillstreams" } = Astro.props;
       .site-nav .site-title {
         font-family: var(--font-mono);
         font-size: 0.9rem;
-        font-weight: normal;
         color: var(--fg);
         text-decoration: none;
         letter-spacing: 0.05em;
@@ -105,7 +175,13 @@ const { title = "calebstillstreams" } = Astro.props;
         transition: color 0.1s, background 0.1s;
       }
       .site-nav .nav-links a:hover { color: var(--fg); background: var(--bg-hover); }
-      .site-nav .nav-links a.active { color: var(--fg); background: var(--fg); color: var(--bg); }
+      .site-nav .nav-links a.active { background: var(--fg); color: var(--bg); }
+      .site-nav .nav-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
 
       /* ── FOOTER ── */
       .site-footer {
@@ -133,6 +209,9 @@ const { title = "calebstillstreams" } = Astro.props;
         <a href="/" class="active">Feed</a>
         <a href="https://www.twitch.tv/calebstillstreams" target="_blank" rel="noopener">Twitch</a>
         <a href="https://www.youtube.com/@calebstillstreams" target="_blank" rel="noopener">YouTube</a>
+      </div>
+      <div class="nav-right">
+        <ThemePicker client:load />
       </div>
     </nav>
 
