@@ -21,6 +21,7 @@ export default function Feed() {
   const [error, setError] = useState<string | null>(null);
   const [auth, setAuthState] = useState<AuthState | null>(null);
   const [compose, setCompose] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [signInChoice, setSignInChoice] = useState<SignInChoice>(null);
   const [authLoading, setAuthLoading] = useState(false);
 
@@ -144,7 +145,14 @@ export default function Feed() {
       )}
 
       <div className="feed-list">
-        {posts.map((p) => <PostCard key={p.id} post={p} />)}
+        {posts.map((p) => (
+          <PostCard
+            key={p.id}
+            post={p}
+            selected={selectedId === p.id}
+            onSelect={() => setSelectedId((cur) => cur === p.id ? null : p.id)}
+          />
+        ))}
       </div>
 
       {signInChoice !== null && (

@@ -33,10 +33,7 @@ const PLATFORM_LABEL: Record<string, string> = {
   other:     "other",
 };
 
-import { useState } from "react";
-
-export default function PostCard({ post }: { post: Post }) {
-  const [selected, setSelected] = useState(false);
+export default function PostCard({ post, selected, onSelect }: { post: Post; selected: boolean; onSelect: () => void }) {
   const avatar = post.avatar_url || avatarFor(post.handle);
   const platform = PLATFORM_LABEL[post.platform] ?? "other";
 
@@ -47,7 +44,7 @@ export default function PostCard({ post }: { post: Post }) {
   return (
     <article
       className={`post-card${selected ? " post-card--selected" : ""}`}
-      onClick={() => setSelected((s) => !s)}
+      onClick={onSelect}
     >
       <img className="post-avatar" src={avatar} alt="" loading="lazy" />
       <div className="post-main">
