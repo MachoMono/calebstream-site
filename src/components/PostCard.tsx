@@ -19,25 +19,24 @@ function avatarFor(handle: string): string {
 function relTime(ts: string): string {
   const diff = (Date.now() - new Date(ts).getTime()) / 1000;
   if (diff < 60) return "just now";
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  return `${Math.floor(diff / 86400)}d ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}m`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
+  return `${Math.floor(diff / 86400)}d`;
 }
 
-const PLATFORM_BADGE: Record<string, { label: string; color: string }> = {
-  twitch:    { label: "Twitch",    color: "#9147ff" },
-  youtube:   { label: "YouTube",   color: "#ff0000" },
-  twitter:   { label: "Twitter",   color: "#1da1f2" },
-  bluesky:   { label: "Bluesky",   color: "#0085ff" },
-  instagram: { label: "Instagram", color: "#e1306c" },
-  other:     { label: "other",     color: "#888" },
+const PLATFORM_LABEL: Record<string, string> = {
+  twitch:    "twitch",
+  youtube:   "youtube",
+  twitter:   "twitter",
+  bluesky:   "bluesky",
+  instagram: "instagram",
+  other:     "other",
 };
 
 export default function PostCard({ post }: { post: Post }) {
   const avatar = post.avatar_url || avatarFor(post.handle);
-  const badge = PLATFORM_BADGE[post.platform] ?? PLATFORM_BADGE.other;
+  const platform = PLATFORM_LABEL[post.platform] ?? "other";
 
-  // Legacy entries have plain message; new entries have body_html
   const body = post.body_html
     ? <div className="card-body" dangerouslySetInnerHTML={{ __html: post.body_html }} />
     : <p className="card-body card-body--plain">{post.message}</p>;
@@ -48,7 +47,7 @@ export default function PostCard({ post }: { post: Post }) {
       <div className="post-main">
         <div className="post-head">
           <span className="post-handle">@{post.handle}</span>
-          <span className="post-badge" style={{ background: badge.color }}>{badge.label}</span>
+          <span className="post-platform">{platform}</span>
           {post.word_count != null && (
             <span className="post-meta">{post.word_count}w</span>
           )}
@@ -59,117 +58,145 @@ export default function PostCard({ post }: { post: Post }) {
         {post.tags.length > 0 && (
           <div className="post-tags">
             {post.tags.map((t) => (
-              <span key={t} className="post-tag">#{t}</span>
+              <span key={t} className="post-tag">{t}</span>
             ))}
           </div>
         )}
+        <div className="post-footer">
+          <button className="post-action">[Open]</button>
+          <button className="post-action">[Save]</button>
+        </div>
       </div>
 
       <style>{`
         .post-card {
           display: grid;
-          grid-template-columns: 44px 1fr;
+          grid-template-columns: 40px 1fr;
           gap: 0.75rem;
-          padding: 1rem 1.1rem;
-          background: #111;
-          border: 1px solid #1e1e1e;
-          transition: border-color 0.15s;
+          padding: 0.75rem 1rem;
+          background: var(--bg);
+          border: 1px solid var(--border);
+          margin-bottom: -1px;
+          transition: background 0.1s;
         }
-        .post-card:hover { border-color: #333; }
+        .post-card:hover { background: var(--bg-hover); }
         .post-avatar {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          border-radius: 2px;
           object-fit: cover;
-          border: 2px solid #222;
+          border: 1px solid var(--border);
           flex-shrink: 0;
         }
         .post-main { min-width: 0; }
         .post-head {
           display: flex;
-          align-items: center;
-          gap: 0.4rem;
+          align-items: baseline;
+          gap: 0.5rem;
           flex-wrap: wrap;
-          margin-bottom: 0.3rem;
+          margin-bottom: 0.35rem;
+          border-bottom: 1px solid var(--border);
+          padding-bottom: 0.35rem;
         }
         .post-handle {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 0.95rem;
-          color: #e8e8e8;
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          font-weight: bold;
+          color: var(--fg);
         }
-        .post-badge {
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.6rem;
-          letter-spacing: 0.05em;
-          color: #fff;
-          padding: 0.1em 0.45em;
-          border-radius: 2px;
-          text-transform: uppercase;
+        .post-platform {
+          font-family: var(--font-mono);
+          font-size: 0.7rem;
+          color: var(--fg-dim);
+          border: 1px solid var(--border);
+          padding: 0 0.3em;
         }
         .post-meta {
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.65rem;
-          color: #555;
+          font-family: var(--font-mono);
+          font-size: 0.7rem;
+          color: var(--fg-dim);
         }
         .post-ts {
           margin-left: auto;
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.65rem;
-          color: #555;
+          font-family: var(--font-mono);
+          font-size: 0.7rem;
+          color: var(--fg-dim);
           white-space: nowrap;
         }
         .post-title {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 1.05rem;
-          color: #F9C424;
+          font-family: var(--font-mono);
+          font-size: 0.9rem;
+          font-weight: bold;
+          color: var(--fg);
           margin-bottom: 0.3rem;
-          line-height: 1.2;
+          line-height: 1.3;
         }
         .card-body {
-          font-size: 0.88rem;
-          color: #ccc;
-          line-height: 1.6;
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
+          color: var(--fg);
+          line-height: 1.65;
           word-break: break-word;
         }
         .card-body--plain { margin: 0; }
-        .card-body p { margin-bottom: 0.5em; }
+        .card-body p { margin-bottom: 0.45em; }
         .card-body p:last-child { margin-bottom: 0; }
-        .card-body a { color: #F9C424; }
-        .card-body ul, .card-body ol { padding-left: 1.25em; }
+        .card-body a { color: var(--fg); text-decoration: underline; }
+        .card-body ul, .card-body ol { padding-left: 1.5em; }
         .card-body blockquote {
-          border-left: 3px solid #333;
-          padding-left: 0.75em;
-          color: #888;
-          margin: 0.5em 0;
+          border-left: 2px solid var(--border);
+          padding-left: 0.6em;
+          color: var(--fg-dim);
+          margin: 0.4em 0;
         }
         .card-body code {
-          background: #1a1a1a;
-          padding: 0.1em 0.3em;
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.85em;
+          background: var(--bg-dim);
+          padding: 0.05em 0.3em;
+          font-family: var(--font-mono);
+          border: 1px solid var(--border);
         }
         .card-body pre {
-          background: #1a1a1a;
-          padding: 0.6em 0.8em;
+          background: var(--bg-dim);
+          border: 1px solid var(--border);
+          padding: 0.5em 0.7em;
           overflow-x: auto;
-          margin: 0.5em 0;
+          margin: 0.4em 0;
         }
         .post-tags {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.3rem;
+          gap: 0;
           margin-top: 0.5rem;
         }
         .post-tag {
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.65rem;
-          color: #888;
-          background: #1a1a1a;
-          border: 1px solid #2a2a2a;
-          padding: 0.1em 0.45em;
+          font-family: var(--font-mono);
+          font-size: 0.7rem;
+          color: var(--fg-dim);
+          border: 1px solid var(--border);
+          padding: 0.05em 0.45em;
+          margin-left: -1px;
+          transition: color 0.1s, background 0.1s;
+          cursor: default;
         }
+        .post-tag:hover { background: var(--bg-hover); color: var(--fg); }
+        .post-footer {
+          display: flex;
+          gap: 0.5rem;
+          margin-top: 0.5rem;
+          padding-top: 0.4rem;
+          border-top: 1px solid var(--border);
+        }
+        .post-action {
+          background: transparent;
+          border: none;
+          color: var(--fg-dim);
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          cursor: pointer;
+          padding: 0;
+          transition: color 0.1s;
+        }
+        .post-action:hover { color: var(--fg); }
       `}</style>
     </article>
   );

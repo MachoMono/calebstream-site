@@ -20,26 +20,18 @@ export default function ComposeModal({ auth, onClose, onPublished }: Props) {
   const [publishing, setPublishing] = useState(false);
 
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      Link.configure({ openOnClick: false }),
-    ],
+    extensions: [StarterKit, Underline, Link.configure({ openOnClick: false })],
     content: "",
   });
 
   const parseTags = () =>
-    tagsRaw
-      .split(",")
-      .map((t) => t.trim().toLowerCase())
-      .filter(Boolean)
-      .slice(0, 3);
+    tagsRaw.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean).slice(0, 3);
 
   const handlePublish = async () => {
     if (!editor) return;
     const body_html = editor.getHTML();
     if (!body_html || body_html === "<p></p>") {
-      setStatus({ type: "error", msg: "Write something first." });
+      setStatus({ type: "error", msg: "write something first." });
       return;
     }
     setPublishing(true);
@@ -56,31 +48,27 @@ export default function ComposeModal({ auth, onClose, onPublished }: Props) {
       onClose();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
-      if (msg === "AUTH_EXPIRED") {
-        setStatus({ type: "error", msg: "Session expired — please sign in again." });
-      } else if (msg === "RATE_LIMITED") {
-        setStatus({ type: "error", msg: "Too many posts — try again in an hour." });
-      } else {
-        setStatus({ type: "error", msg });
-      }
+      if (msg === "AUTH_EXPIRED") setStatus({ type: "error", msg: "session expired — sign in again." });
+      else if (msg === "RATE_LIMITED") setStatus({ type: "error", msg: "too many posts — wait an hour." });
+      else setStatus({ type: "error", msg });
     } finally {
       setPublishing(false);
     }
   };
 
   return (
-    <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
       <div className="modal">
         <div className="modal-header">
-          <span className="modal-title">Make a Post</span>
+          <span className="modal-title">// make a post</span>
           <span className="modal-author">as @{auth.handle} · {auth.provider}</span>
-          <button className="modal-close" onClick={onClose}>✕</button>
+          <button className="modal-close" onClick={onClose}>[x]</button>
         </div>
 
         <div className="modal-body">
           <input
-            className="field-title"
-            placeholder="Title (optional)"
+            className="field"
+            placeholder="title (optional)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             maxLength={120}
@@ -95,17 +83,17 @@ export default function ComposeModal({ auth, onClose, onPublished }: Props) {
             <>
               <div className="toolbar">
                 {[
-                  { label: "B",  title: "Bold",          action: () => editor?.chain().focus().toggleBold().run() },
-                  { label: "I",  title: "Italic",        action: () => editor?.chain().focus().toggleItalic().run() },
-                  { label: "U",  title: "Underline",     action: () => editor?.chain().focus().toggleUnderline().run() },
-                  { label: "S",  title: "Strike",        action: () => editor?.chain().focus().toggleStrike().run() },
-                  { label: "<>", title: "Code",          action: () => editor?.chain().focus().toggleCode().run() },
-                  { label: "H2", title: "Heading",       action: () => editor?.chain().focus().toggleHeading({ level: 2 }).run() },
-                  { label: "•",  title: "Bullet list",   action: () => editor?.chain().focus().toggleBulletList().run() },
-                  { label: "1.", title: "Ordered list",  action: () => editor?.chain().focus().toggleOrderedList().run() },
-                  { label: "❝",  title: "Blockquote",   action: () => editor?.chain().focus().toggleBlockquote().run() },
-                ].map(({ label, title: t, action }) => (
-                  <button key={label} title={t} className="tb-btn" onMouseDown={(e) => { e.preventDefault(); action(); }}>
+                  { label: "B",  title: "Bold",         fn: () => editor?.chain().focus().toggleBold().run() },
+                  { label: "I",  title: "Italic",       fn: () => editor?.chain().focus().toggleItalic().run() },
+                  { label: "U",  title: "Underline",    fn: () => editor?.chain().focus().toggleUnderline().run() },
+                  { label: "S",  title: "Strike",       fn: () => editor?.chain().focus().toggleStrike().run() },
+                  { label: "<>", title: "Code",         fn: () => editor?.chain().focus().toggleCode().run() },
+                  { label: "H2", title: "Heading",      fn: () => editor?.chain().focus().toggleHeading({ level: 2 }).run() },
+                  { label: "• ", title: "Bullet list",  fn: () => editor?.chain().focus().toggleBulletList().run() },
+                  { label: "1.", title: "Ordered list", fn: () => editor?.chain().focus().toggleOrderedList().run() },
+                  { label: "❝",  title: "Blockquote",  fn: () => editor?.chain().focus().toggleBlockquote().run() },
+                ].map(({ label, title: t, fn }) => (
+                  <button key={label} title={t} className="tb-btn" onMouseDown={(e) => { e.preventDefault(); fn(); }}>
                     {label}
                   </button>
                 ))}
@@ -115,32 +103,30 @@ export default function ComposeModal({ auth, onClose, onPublished }: Props) {
           )}
 
           <input
-            className="field-tags"
-            placeholder="Topics (comma-separated, up to 3)"
+            className="field"
+            placeholder="topics (comma-separated, up to 3)"
             value={tagsRaw}
             onChange={(e) => setTagsRaw(e.target.value)}
           />
 
-          {status && (
-            <p className={`compose-status ${status.type}`}>{status.msg}</p>
-          )}
+          {status && <p className={`compose-status ${status.type}`}>{status.msg}</p>}
         </div>
 
         <div className="modal-footer">
-          <button className="btn-ghost" onClick={() => setPreview((p) => !p)}>
-            {preview ? "Edit" : "Preview"}
+          <button className="lc-btn" onClick={() => setPreview((p) => !p)}>
+            {preview ? "[edit]" : "[preview]"}
           </button>
-          <button className="btn-publish" onClick={handlePublish} disabled={publishing}>
-            {publishing ? "Publishing…" : "Publish"}
+          <button className="lc-btn lc-btn--publish" onClick={handlePublish} disabled={publishing}>
+            {publishing ? "[publishing...]" : "[publish]"}
           </button>
         </div>
       </div>
 
       <style>{`
-        .modal-backdrop {
+        .overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,0.75);
+          background: rgba(234,234,228,0.88);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -148,167 +134,159 @@ export default function ComposeModal({ auth, onClose, onPublished }: Props) {
           padding: 1rem;
         }
         .modal {
-          background: #111;
-          border: 1px solid #2a2a2a;
+          background: var(--bg);
+          border: 1px solid var(--fg);
           width: 100%;
-          max-width: 640px;
+          max-width: 620px;
           max-height: 90vh;
           display: flex;
           flex-direction: column;
-          overflow: hidden;
+          box-shadow: 5px 5px 0 var(--fg);
         }
         .modal-header {
           display: flex;
           align-items: center;
           gap: 0.6rem;
-          padding: 0.75rem 1rem;
-          border-bottom: 1px solid #1e1e1e;
+          padding: 0.6rem 0.9rem;
+          border-bottom: 1px solid var(--border);
           flex-shrink: 0;
         }
         .modal-title {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 900;
-          font-size: 1.1rem;
-          color: #F9C424;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
+          color: var(--fg);
         }
         .modal-author {
-          font-family: 'Share Tech Mono', monospace;
+          font-family: var(--font-mono);
           font-size: 0.7rem;
-          color: #555;
+          color: var(--fg-dim);
         }
         .modal-close {
           margin-left: auto;
           background: none;
           border: none;
-          color: #555;
-          font-size: 1rem;
+          color: var(--fg-dim);
+          font-family: var(--font-mono);
+          font-size: 0.78rem;
           cursor: pointer;
-          padding: 0.1rem 0.3rem;
+          padding: 0;
+          transition: color 0.1s;
         }
-        .modal-close:hover { color: #e8e8e8; }
+        .modal-close:hover { color: var(--fg); }
         .modal-body {
-          padding: 0.9rem 1rem;
+          padding: 0.8rem 0.9rem;
           overflow-y: auto;
           flex: 1;
           display: flex;
           flex-direction: column;
-          gap: 0.6rem;
+          gap: 0.5rem;
         }
-        .field-title, .field-tags {
-          background: #0d0d0d;
-          border: 1px solid #2a2a2a;
-          color: #e8e8e8;
-          font-family: 'Barlow', sans-serif;
-          font-size: 0.88rem;
-          padding: 0.45rem 0.65rem;
+        .field {
+          background: var(--bg);
+          border: 1px solid var(--border);
+          color: var(--fg);
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
+          padding: 0.35rem 0.55rem;
           outline: none;
           width: 100%;
-          transition: border-color 0.15s;
+          transition: border-color 0.1s;
         }
-        .field-title:focus, .field-tags:focus { border-color: #F9C424; }
-        .field-title::placeholder, .field-tags::placeholder { color: #444; }
+        .field:focus { border-color: var(--fg); }
+        .field::placeholder { color: var(--fg-dim); }
         .toolbar {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.2rem;
+          gap: 0;
         }
         .tb-btn {
-          background: #1a1a1a;
-          border: 1px solid #2a2a2a;
-          color: #aaa;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 0.78rem;
+          background: var(--bg);
+          border: 1px solid var(--border);
+          color: var(--fg-dim);
+          font-family: var(--font-mono);
+          font-size: 0.75rem;
           padding: 0.2rem 0.45rem;
           cursor: pointer;
+          margin-left: -1px;
           transition: background 0.1s, color 0.1s;
         }
-        .tb-btn:hover { background: #222; color: #F9C424; }
+        .tb-btn:hover { background: var(--bg-hover); color: var(--fg); }
         .editor-area {
-          border: 1px solid #2a2a2a;
-          min-height: 180px;
-          padding: 0.65rem 0.75rem;
+          border: 1px solid var(--border);
+          min-height: 160px;
+          padding: 0.5rem 0.65rem;
           cursor: text;
-          font-size: 0.88rem;
-          color: #ccc;
-          line-height: 1.6;
-          outline: none;
+          font-size: 0.82rem;
+          font-family: var(--font-mono);
+          color: var(--fg);
+          line-height: 1.65;
+          background: var(--bg);
         }
-        .editor-area:focus-within { border-color: #333; }
-        .editor-area .tiptap { outline: none; min-height: 160px; }
-        .editor-area .tiptap p { margin-bottom: 0.5em; }
+        .editor-area:focus-within { border-color: var(--fg); }
+        .editor-area .tiptap { outline: none; min-height: 140px; }
+        .editor-area .tiptap p { margin-bottom: 0.45em; }
         .editor-area .tiptap p:last-child { margin-bottom: 0; }
-        .editor-area .tiptap h2 { color: #F9C424; margin-bottom: 0.3em; }
-        .editor-area .tiptap a { color: #F9C424; }
-        .editor-area .tiptap ul, .editor-area .tiptap ol { padding-left: 1.25em; }
+        .editor-area .tiptap a { color: var(--fg); text-decoration: underline; }
+        .editor-area .tiptap ul, .editor-area .tiptap ol { padding-left: 1.4em; }
         .editor-area .tiptap blockquote {
-          border-left: 3px solid #333;
-          padding-left: 0.75em;
-          color: #888;
+          border-left: 2px solid var(--border);
+          padding-left: 0.6em;
+          color: var(--fg-dim);
         }
         .editor-area .tiptap code {
-          background: #1a1a1a;
-          padding: 0.1em 0.3em;
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.85em;
+          background: var(--bg-dim);
+          border: 1px solid var(--border);
+          padding: 0.05em 0.3em;
+          font-family: var(--font-mono);
+          font-size: 0.9em;
         }
         .preview-box {
-          border: 1px solid #2a2a2a;
-          min-height: 180px;
-          padding: 0.65rem 0.75rem;
-          font-size: 0.88rem;
-          color: #ccc;
-          line-height: 1.6;
+          border: 1px solid var(--border);
+          min-height: 160px;
+          padding: 0.5rem 0.65rem;
+          font-size: 0.82rem;
+          font-family: var(--font-mono);
+          color: var(--fg);
+          line-height: 1.65;
+          background: var(--bg-dim);
         }
-        .preview-box p { margin-bottom: 0.5em; }
-        .preview-box a { color: #F9C424; }
+        .preview-box p { margin-bottom: 0.45em; }
         .compose-status {
-          font-family: 'Share Tech Mono', monospace;
+          font-family: var(--font-mono);
           font-size: 0.75rem;
-          padding: 0.3rem 0.5rem;
+          padding: 0.25rem 0.4rem;
+          border: 1px solid;
         }
-        .compose-status.error { color: #ff6b6b; background: #1a0505; border: 1px solid #3a1010; }
-        .compose-status.ok { color: #a8ffa8; }
+        .compose-status.error { color: #880000; border-color: #cc8888; background: #fff0f0; }
+        .compose-status.ok { color: #006600; border-color: #88cc88; }
         .modal-footer {
           display: flex;
           justify-content: flex-end;
           align-items: center;
-          gap: 0.5rem;
-          padding: 0.65rem 1rem;
-          border-top: 1px solid #1e1e1e;
+          gap: 0.75rem;
+          padding: 0.55rem 0.9rem;
+          border-top: 1px solid var(--border);
           flex-shrink: 0;
         }
-        .btn-ghost {
+        .lc-btn {
           background: transparent;
-          border: 1px solid #2a2a2a;
-          color: #888;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 0.85rem;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          padding: 0.3rem 0.75rem;
-          cursor: pointer;
-          transition: border-color 0.15s, color 0.15s;
-        }
-        .btn-ghost:hover { border-color: #888; color: #e8e8e8; }
-        .btn-publish {
-          background: #F9C424;
           border: none;
-          color: #0d0d0d;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 900;
-          font-size: 0.95rem;
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          padding: 0.35rem 1.1rem;
+          color: var(--fg-dim);
+          font-family: var(--font-mono);
+          font-size: 0.78rem;
           cursor: pointer;
-          transition: opacity 0.15s;
+          padding: 0;
+          transition: color 0.1s;
         }
-        .btn-publish:hover { opacity: 0.9; }
-        .btn-publish:disabled { opacity: 0.4; cursor: not-allowed; }
+        .lc-btn:hover { color: var(--fg); }
+        .lc-btn--publish {
+          color: var(--fg);
+          font-weight: bold;
+        }
+        .lc-btn--publish:disabled { opacity: 0.4; cursor: not-allowed; }
+        .card-body { font-family: var(--font-mono); font-size: 0.82rem; color: var(--fg); line-height: 1.65; }
+        .card-body p { margin-bottom: 0.45em; }
+        .card-body a { color: var(--fg); text-decoration: underline; }
       `}</style>
     </div>
   );

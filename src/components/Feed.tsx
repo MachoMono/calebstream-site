@@ -36,8 +36,6 @@ export default function Feed() {
     }
   }, []);
 
-  // Resolve Twitch token → fetch identity via backend by trying to post
-  // We do a lightweight identity fetch instead: use the Helix /users endpoint
   const resolveTwitchIdentity = useCallback(async (token: string): Promise<AuthState | null> => {
     try {
       const res = await fetch("https://api.twitch.tv/helix/users", {
@@ -62,11 +60,9 @@ export default function Feed() {
   }, []);
 
   useEffect(() => {
-    // Restore auth from session
     const saved = getAuth();
     if (saved) setAuthState(saved);
 
-    // Handle Twitch redirect callback
     const twitchToken = parseTwitchCallback();
     if (twitchToken) {
       setAuthLoading(true);
@@ -88,7 +84,6 @@ export default function Feed() {
     } else {
       setAuthLoading(true);
       loginWithGoogle((credential) => {
-        // Decode JWT payload for display name + avatar (client-side only for UI; backend re-verifies)
         try {
           const payload = JSON.parse(atob(credential.split(".")[1]));
           const state: AuthState = {
@@ -118,84 +113,80 @@ export default function Feed() {
     if (auth) {
       setCompose(true);
     } else {
-      setSignInChoice("twitch"); // triggers the sign-in picker
+      setSignInChoice("twitch");
     }
-  };
-
-  const handlePublished = () => {
-    // Optimistically reload
-    loadPosts();
   };
 
   return (
     <main className="feed-root">
       <div className="feed-toolbar">
-        <h1 className="feed-heading">Feed</h1>
+        <span className="feed-heading">// feed</span>
         <div className="feed-toolbar-right">
           {authLoading ? (
-            <span className="auth-loading">signing in…</span>
+            <span className="auth-status">authenticating...</span>
           ) : auth ? (
-            <div className="auth-control">
+            <span className="auth-status">
               {auth.avatarUrl && <img className="auth-avatar" src={auth.avatarUrl} alt="" />}
-              <span className="auth-handle">@{auth.handle}</span>
-              <button className="btn-nav" onClick={handleSignOut}>sign out</button>
-            </div>
+              @{auth.handle}
+              <button className="lc-btn" onClick={handleSignOut}>[sign out]</button>
+            </span>
           ) : null}
-          <button className="btn-make-post" onClick={handleMakePost}>
-            + Make a Post
+          <button className="lc-btn lc-btn--primary" onClick={handleMakePost}>
+            [+ make a post]
           </button>
         </div>
       </div>
 
-      {loading && <p className="feed-state">Loading…</p>}
-      {error && <p className="feed-state feed-error">{error}</p>}
-
+      {loading && <p className="feed-state">loading...</p>}
+      {error && <p className="feed-state feed-error">error: {error}</p>}
       {!loading && !error && posts.length === 0 && (
-        <p className="feed-state feed-empty">No posts yet — be the first!</p>
+        <p className="feed-state">no posts yet — be the first.</p>
       )}
 
       <div className="feed-list">
         {posts.map((p) => <PostCard key={p.id} post={p} />)}
       </div>
 
-      {/* Sign-in picker */}
       {signInChoice !== null && (
-        <div className="modal-backdrop" onClick={() => setSignInChoice(null)}>
-          <div className="signin-picker" onClick={(e) => e.stopPropagation()}>
-            <p className="signin-label">Sign in to post</p>
-            <button className="btn-signin btn-signin--twitch" onClick={() => handleSignIn("twitch")}>
-              Sign in with Twitch
-            </button>
-            <button className="btn-signin btn-signin--youtube" onClick={() => handleSignIn("youtube")}>
-              Sign in with YouTube
-            </button>
-            <button className="btn-cancel" onClick={() => setSignInChoice(null)}>Cancel</button>
+        <div className="overlay" onClick={() => setSignInChoice(null)}>
+          <div className="signin-box" onClick={(e) => e.stopPropagation()}>
+            <p className="signin-title">// sign in to post</p>
+            <button className="signin-btn" onClick={() => handleSignIn("twitch")}>[sign in with Twitch]</button>
+            <button className="signin-btn" onClick={() => handleSignIn("youtube")}>[sign in with YouTube]</button>
+            <button className="signin-cancel" onClick={() => setSignInChoice(null)}>[cancel]</button>
           </div>
         </div>
       )}
 
-      {/* Compose modal */}
       {compose && auth && (
         <ComposeModal
           auth={auth}
           onClose={() => setCompose(false)}
-          onPublished={handlePublished}
+          onPublished={loadPosts}
         />
       )}
 
       <style>{`
         .feed-root {
-          max-width: 720px;
+          max-width: 700px;
           margin: 0 auto;
-          padding: 1.5rem 1rem 3rem;
+          padding: 1.25rem 1rem 4rem;
         }
         .feed-toolbar {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 1.25rem;
+          margin-bottom: 1rem;
+          padding-bottom: 0.6rem;
+          border-bottom: 1px solid var(--border);
           gap: 0.75rem;
           flex-wrap: wrap;
+        }
+        .feed-heading {
+          font-family: var(--font-mono);
+          font-size: 0.85rem;
+          color: var(--fg-dim);
+          letter-spacing: 0.05em;
         }
         .feed-toolbar-right {
           display: flex;
@@ -203,145 +194,98 @@ export default function Feed() {
           gap: 0.5rem;
           flex-wrap: wrap;
         }
-        .feed-heading {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 900;
-          font-size: 1.3rem;
-          text-transform: uppercase;
-          letter-spacing: 0.1em;
-          color: #F9C424;
-          border-left: 3px solid #F9C424;
-          padding-left: 0.6rem;
+        .auth-status {
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          color: var(--fg-dim);
+          display: flex;
+          align-items: center;
+          gap: 0.35rem;
         }
-        .btn-make-post {
-          background: #F9C424;
+        .auth-avatar {
+          width: 18px;
+          height: 18px;
+          border-radius: 1px;
+          object-fit: cover;
+          border: 1px solid var(--border);
+        }
+        .lc-btn {
+          background: transparent;
           border: none;
-          color: #0d0d0d;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 900;
-          font-size: 0.9rem;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          padding: 0.3rem 0.9rem;
+          color: var(--fg-dim);
+          font-family: var(--font-mono);
+          font-size: 0.78rem;
           cursor: pointer;
-          transition: opacity 0.15s;
+          padding: 0;
+          transition: color 0.1s;
         }
-        .btn-make-post:hover { opacity: 0.88; }
+        .lc-btn:hover { color: var(--fg); }
+        .lc-btn--primary { color: var(--fg); font-weight: bold; }
         .feed-state {
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.82rem;
-          color: #555;
+          font-family: var(--font-mono);
+          font-size: 0.78rem;
+          color: var(--fg-dim);
           padding: 2rem 0;
           text-align: center;
         }
-        .feed-error { color: #ff6b6b; }
-        .feed-empty { color: #444; }
+        .feed-error { color: #880000; }
         .feed-list {
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
+          border: 1px solid var(--border);
         }
 
-        /* nav auth control */
-        .auth-control {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-        .auth-loading {
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.72rem;
-          color: #555;
-        }
-        .auth-avatar {
-          width: 28px;
-          height: 28px;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 1px solid #333;
-        }
-        .auth-handle {
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.72rem;
-          color: #aaa;
-          max-width: 120px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        .btn-nav {
-          background: transparent;
-          border: 1px solid #2a2a2a;
-          color: #888;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 0.75rem;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          padding: 0.2rem 0.5rem;
-          cursor: pointer;
-          transition: border-color 0.15s, color 0.15s;
-          white-space: nowrap;
-        }
-        .btn-nav:hover { border-color: #888; color: #e8e8e8; }
-        .btn-nav--accent { border-color: #F9C424; color: #F9C424; }
-        .btn-nav--accent:hover { background: #F9C424; color: #0d0d0d; }
-
-        /* sign-in picker */
-        .modal-backdrop {
+        /* sign-in overlay */
+        .overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,0.75);
+          background: rgba(234,234,228,0.85);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1000;
         }
-        .signin-picker {
-          background: #111;
-          border: 1px solid #2a2a2a;
+        .signin-box {
+          background: var(--bg);
+          border: 1px solid var(--fg);
           padding: 1.5rem 2rem;
           display: flex;
           flex-direction: column;
           gap: 0.6rem;
-          align-items: center;
-          min-width: 260px;
+          min-width: 240px;
+          box-shadow: 4px 4px 0 var(--fg);
         }
-        .signin-label {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 1rem;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: #aaa;
+        .signin-title {
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
+          color: var(--fg-dim);
           margin-bottom: 0.25rem;
         }
-        .btn-signin {
-          width: 100%;
-          border: none;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 700;
-          font-size: 0.95rem;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          padding: 0.5rem 1rem;
-          cursor: pointer;
-          transition: opacity 0.15s;
-        }
-        .btn-signin:hover { opacity: 0.88; }
-        .btn-signin--twitch { background: #9147ff; color: #fff; }
-        .btn-signin--youtube { background: #ff0000; color: #fff; }
-        .btn-cancel {
+        .signin-btn {
           background: transparent;
-          border: 1px solid #2a2a2a;
-          color: #555;
-          font-family: 'Share Tech Mono', monospace;
-          font-size: 0.75rem;
-          padding: 0.3rem 0.75rem;
+          border: 1px solid var(--border);
+          color: var(--fg);
+          font-family: var(--font-mono);
+          font-size: 0.82rem;
+          padding: 0.4rem 0.75rem;
           cursor: pointer;
-          margin-top: 0.25rem;
+          text-align: left;
+          transition: background 0.1s;
         }
-        .btn-cancel:hover { color: #aaa; }
+        .signin-btn:hover { background: var(--bg-hover); }
+        .signin-cancel {
+          background: transparent;
+          border: none;
+          color: var(--fg-dim);
+          font-family: var(--font-mono);
+          font-size: 0.72rem;
+          cursor: pointer;
+          padding: 0;
+          margin-top: 0.15rem;
+          text-align: left;
+          transition: color 0.1s;
+        }
+        .signin-cancel:hover { color: var(--fg); }
       `}</style>
     </main>
   );
