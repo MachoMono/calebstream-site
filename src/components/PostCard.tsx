@@ -78,15 +78,16 @@ export default function PostCard({ post, selected, onSelect }: { post: Post; sel
           gap: 1rem;
           padding: 1.1rem 1.4rem;
           background: var(--bg);
-          border: 1px solid var(--border);
+          border: 2px solid var(--border);
+          border-radius: 10px;
           cursor: pointer;
           transition: background 0.1s, border-color 0.1s, box-shadow 0.1s;
         }
         .post-card:hover { background: var(--bg-hover); }
         .post-card--selected {
           border-color: var(--fg);
-          border-width: 2px;
-          box-shadow: 3px 3px 0 var(--fg);
+          border-width: 3px;
+          box-shadow: 4px 4px 0 var(--fg);
         }
         .post-avatar {
           width: 52px;
