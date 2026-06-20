@@ -4,7 +4,7 @@ const THEMES = [
   { id: "lcd",      label: "LCD"      },
   { id: "snes",     label: "SNES"     },
   { id: "genesis",  label: "Genesis"  },
-  { id: "ps2",      label: "PS2"      },
+  { id: "playstation", label: "PlayStation" },
   { id: "gamecube", label: "GameCube" },
   { id: "bombpop",  label: "Bombpop"  },
 ] as const;
