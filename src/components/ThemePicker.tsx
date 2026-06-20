@@ -61,7 +61,7 @@ export default function ThemePicker() {
           border: none;
           color: var(--fg-dim);
           font-family: var(--font-mono);
-          font-size: 0.75rem;
+          font-size: 1rem;
           cursor: pointer;
           padding: 0;
           transition: color 0.1s;
@@ -71,14 +71,14 @@ export default function ThemePicker() {
         .tp-menu {
           position: absolute;
           right: 0;
-          top: calc(100% + 4px);
+          top: calc(100% + 6px);
           background: var(--bg);
-          border: 1px solid var(--fg);
+          border: 2px solid var(--fg);
           display: flex;
           flex-direction: column;
           z-index: 200;
-          min-width: 130px;
-          box-shadow: 3px 3px 0 var(--fg);
+          min-width: 180px;
+          box-shadow: 4px 4px 0 var(--fg);
         }
         .tp-item {
           background: transparent;
@@ -86,8 +86,8 @@ export default function ThemePicker() {
           border-bottom: 1px solid var(--border);
           color: var(--fg-dim);
           font-family: var(--font-mono);
-          font-size: 0.75rem;
-          padding: 0.4rem 0.6rem;
+          font-size: 1rem;
+          padding: 0.55rem 0.9rem;
           cursor: pointer;
           text-align: left;
           white-space: nowrap;
