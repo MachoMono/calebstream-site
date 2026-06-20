@@ -74,9 +74,9 @@ export default function PostCard({ post, selected, onSelect }: { post: Post; sel
       <style>{`
         .post-card {
           display: grid;
-          grid-template-columns: 40px 1fr;
-          gap: 0.75rem;
-          padding: 0.75rem 1rem;
+          grid-template-columns: 52px 1fr;
+          gap: 1rem;
+          padding: 1.1rem 1.4rem;
           background: var(--bg);
           border: 1px solid var(--border);
           cursor: pointer;
@@ -89,8 +89,8 @@ export default function PostCard({ post, selected, onSelect }: { post: Post; sel
           box-shadow: 3px 3px 0 var(--fg);
         }
         .post-avatar {
-          width: 40px;
-          height: 40px;
+          width: 52px;
+          height: 52px;
           border-radius: 2px;
           object-fit: cover;
           border: 1px solid var(--border);
@@ -100,88 +100,88 @@ export default function PostCard({ post, selected, onSelect }: { post: Post; sel
         .post-head {
           display: flex;
           align-items: baseline;
-          gap: 0.5rem;
+          gap: 0.6rem;
           flex-wrap: wrap;
-          margin-bottom: 0.35rem;
+          margin-bottom: 0.5rem;
           border-bottom: 1px solid var(--border);
-          padding-bottom: 0.35rem;
+          padding-bottom: 0.5rem;
         }
         .post-handle {
           font-family: var(--font-mono);
-          font-size: 0.85rem;
+          font-size: 1.05rem;
           font-weight: bold;
           color: var(--fg);
         }
         .post-platform {
           font-family: var(--font-mono);
-          font-size: 0.7rem;
+          font-size: 0.8rem;
           color: var(--fg-dim);
           border: 1px solid var(--border);
-          padding: 0 0.3em;
+          padding: 0 0.35em;
         }
         .post-meta {
           font-family: var(--font-mono);
-          font-size: 0.7rem;
+          font-size: 0.8rem;
           color: var(--fg-dim);
         }
         .post-ts {
           margin-left: auto;
           font-family: var(--font-mono);
-          font-size: 0.7rem;
+          font-size: 0.8rem;
           color: var(--fg-dim);
           white-space: nowrap;
         }
         .post-title {
           font-family: var(--font-mono);
-          font-size: 0.9rem;
+          font-size: 1.3rem;
           font-weight: bold;
           color: var(--fg);
-          margin-bottom: 0.3rem;
-          line-height: 1.3;
+          margin-bottom: 0.45rem;
+          line-height: 1.25;
         }
         .card-body {
           font-family: var(--font-mono);
-          font-size: 0.82rem;
+          font-size: 1rem;
           color: var(--fg);
-          line-height: 1.65;
+          line-height: 1.7;
           word-break: break-word;
         }
         .card-body--plain { margin: 0; }
-        .card-body p { margin-bottom: 0.45em; }
+        .card-body p { margin-bottom: 0.55em; }
         .card-body p:last-child { margin-bottom: 0; }
         .card-body a { color: var(--fg); text-decoration: underline; }
         .card-body ul, .card-body ol { padding-left: 1.5em; }
         .card-body blockquote {
           border-left: 2px solid var(--border);
-          padding-left: 0.6em;
+          padding-left: 0.7em;
           color: var(--fg-dim);
-          margin: 0.4em 0;
+          margin: 0.5em 0;
         }
         .card-body code {
           background: var(--bg-dim);
-          padding: 0.05em 0.3em;
+          padding: 0.05em 0.35em;
           font-family: var(--font-mono);
           border: 1px solid var(--border);
         }
         .card-body pre {
           background: var(--bg-dim);
           border: 1px solid var(--border);
-          padding: 0.5em 0.7em;
+          padding: 0.6em 0.8em;
           overflow-x: auto;
-          margin: 0.4em 0;
+          margin: 0.5em 0;
         }
         .post-tags {
           display: flex;
           flex-wrap: wrap;
           gap: 0;
-          margin-top: 0.5rem;
+          margin-top: 0.65rem;
         }
         .post-tag {
           font-family: var(--font-mono);
-          font-size: 0.7rem;
+          font-size: 0.82rem;
           color: var(--fg-dim);
           border: 1px solid var(--border);
-          padding: 0.05em 0.45em;
+          padding: 0.1em 0.55em;
           margin-left: -1px;
           transition: color 0.1s, background 0.1s;
           cursor: default;
@@ -189,9 +189,9 @@ export default function PostCard({ post, selected, onSelect }: { post: Post; sel
         .post-tag:hover { background: var(--bg-hover); color: var(--fg); }
         .post-footer {
           display: flex;
-          gap: 0.5rem;
-          margin-top: 0.5rem;
-          padding-top: 0.4rem;
+          gap: 0.6rem;
+          margin-top: 0.65rem;
+          padding-top: 0.5rem;
           border-top: 1px solid var(--border);
         }
         .post-action {
@@ -199,7 +199,7 @@ export default function PostCard({ post, selected, onSelect }: { post: Post; sel
           border: none;
           color: var(--fg-dim);
           font-family: var(--font-mono);
-          font-size: 0.72rem;
+          font-size: 0.82rem;
           cursor: pointer;
           padding: 0;
           transition: color 0.1s;

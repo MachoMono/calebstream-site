@@ -240,7 +240,7 @@ export default function Feed() {
         .feed-list {
           display: flex;
           flex-direction: column;
-          gap: 0.6rem;
+          gap: 1rem;
         }
 
         /* sign-in overlay */
